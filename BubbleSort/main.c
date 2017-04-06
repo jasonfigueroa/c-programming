@@ -1,6 +1,3 @@
-//for the time being this app will read in values from an input file one line at
-//a time and print the sorted version of the array of values
-
 #include <stdio.h>
 #include <stdlib.h>
 
