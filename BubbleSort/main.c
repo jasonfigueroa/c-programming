@@ -1,33 +1,59 @@
+//for the time being this app will read in values from an input file one line at
+//a time and print the sorted version of the array of values
+
 #include <stdio.h>
 #include <stdlib.h>
 
 void bubblesort (int *arr, int size);
+void fprintf_int_array (FILE *ofp, int *arr, int size);
 void print_int_array (int *arr, int size);
 
 int main ()
 {
-    int array_size = 10;
+    int array_size = 15;
 
     int *values = (int*)malloc(array_size*sizeof(int));
 
-    values[0] = 33;
-    values[1] = 17;
-    values[2] = 11;
-    values[3] = 110;
-    values[4] = 51;
-    values[5] = 68;
-    values[6] = 89;
-    values[7] = 15;
-    values[8] = 233;
-    values[9] = 42;
+    /******************/
+    /** test harness **/
+    /******************/
 
-    print_int_array(values, array_size);
+    FILE *ifp;
+    ifp = fopen("input.txt", "r");
 
-    printf("\n");
+    FILE *ofp;
+    ofp = fopen("output.txt", "w");
 
-    bubblesort(values, array_size);
+    int i, j, rows;
 
-    print_int_array(values, array_size);
+    fscanf(ifp, "%d", &rows);
+
+    fprintf(ofp, "%d\n", rows * 2);
+
+    for(i = 0; i < rows; i++)
+    {
+        for(j = 0; j < array_size; j++)
+        {
+            fscanf(ifp, "%d", &values[j]);
+        }
+
+        fprintf_int_array(ofp, values, array_size);
+
+        fprintf(ofp, "\n");
+
+        bubblesort(values, array_size);
+
+        fprintf_int_array(ofp, values, array_size);
+
+        fprintf(ofp, "\n");
+    }
+
+    fclose(ifp);
+    fclose(ofp);
+
+    /*************************/
+    /** end of test harness **/
+    /*************************/
 
     free(values);
 
@@ -48,6 +74,23 @@ void bubblesort (int *arr, int size)
                 arr[j - 1] = arr[j];
                 arr[j] = temp;
             }
+        }
+    }
+}
+
+void fprintf_int_array (FILE *ofp, int *arr, int size)
+{
+    int i;
+
+    for(i = 0; i < size; i++)
+    {
+        if(i < size - 1)
+        {
+            fprintf(ofp, "%d ", arr[i]);
+        }
+        else
+        {
+            fprintf(ofp, "%d", arr[i]);
         }
     }
 }
